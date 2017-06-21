@@ -4,12 +4,17 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 import time
 import unittest
+import os
 
 MAX_WAIT = 10
 
 class NewVisitorTest(StaticLiveServerTestCase):
 	def setUp(self):
 		self.browser = webdriver.Firefox()
+		staging_server = os.environ.get('STAGING_SERVER')
+		if staging_server:
+			self.live_server_url = 'http://' + staging_server
+
 	def tearDown(self):
 		self.browser.quit()
 
@@ -51,6 +56,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
 
 		self.wait_for_row_in_list_table('1: Buy peacock feathers')
+
 		
 
 		# There is still a text box inviting her to add another item. She
