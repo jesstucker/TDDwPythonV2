@@ -14,9 +14,11 @@ eg, on Ubuntu:
     sudo apt-get install nginx git python36 python3.6-venv
 
 ## Nginx Virtual Host config
+## Upstart Job
 
 * see nginx.template.conf
 * replace SITENAME with, e.g., staging.my-domain.com
+* replace SEKRIT in "EnvironmentFile" with email password
 
 ## Systemd service
 
@@ -33,3 +35,4 @@ Assume we have a user account at /home/username
          ├── source
          ├── static
          └── virtualenv
+
