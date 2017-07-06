@@ -13,11 +13,14 @@ def send_login_email(request):
         reverse('login') + '?token=' + str(token.uid)
     )
     message_body = f'Use this link to log in:\n\n{url}'
+    # import pdb
+    # pdb.set_trace()
     send_mail(
         'Your login link for Superlists',
         message_body,
         'noreply@superlists',
-        [email]
+        [email],
+        fail_silently=False,
     )
     messages.success(
         request,
