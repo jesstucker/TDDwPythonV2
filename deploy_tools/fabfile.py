@@ -3,7 +3,7 @@ from fabric.api import env, local, run
 import random
 
 
-REPO_URL = 'https://github.com/hjwp/book-example.git'
+REPO_URL = 'https://github.com/jesstucker/TDDwPythonV2'
 
 def deploy():
     site_folder = f'/home/{env.user}/sites/{env.host}'
