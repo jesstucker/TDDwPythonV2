@@ -1,0 +1,49 @@
+sudo service nginx restart
+sudo systemctl daemon-reload
+sudo systemctl enable gunicorn-superlists-staging.iamdumb.org
+sudo systemctl start gunicorn-superlists-staging.iamdumb.org
+
+RESTART WAS KEY HERE JESUS
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn-superlists-staging.iamdumb.org
+
+sudo tail -f /var/log/nginx/error.log
+
+server: 
+sudo vi /etc/systemd/system/gunicorn-superlists-staging.iamdumb.org.service
+
+[Unit]
+Description=Gunicorn server for superlists-staging.iamdumb.org
+
+[Service]
+Restart=on-failure
+User=jess
+WorkingDirectory=/home/jess/sites/superlists-staging.iamdumb.org/source
+ExecStart=/home/jess/sites/superlists-staging.iamdumb.org/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/superlists-staging.iamdumb.org.socket \
+    superlists.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+sudo vi /etc/nginx/sites-available/superlists-staging.iamdumb.org
+
+server {
+    listen 80;
+    server_name superlists-staging.iamdumb.org;
+
+    location /static {
+        alias /home/jess/sites/superlists-staging.iamdumb.org/static;
+    }
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_pass http://unix:/tmp/superlists-staging.iamdumb.org.socket;
+    }
+}
+
+../virtualenv/bin/gunicorn --bind \
+    unix:/tmp/superlists-staging.iamdumb.org.socket superlists.wsgi:application

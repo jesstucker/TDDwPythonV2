@@ -18,6 +18,7 @@
   <script src="../jquery-3.1.1.min.js"></script>
   <script src="../list.js"></script>
   <script src="qunit-2.0.1.js"></script>
+
   <script>
 
 QUnit.test("errors should be hidden on keypress", function (assert) {
@@ -27,10 +28,12 @@ QUnit.test("errors should be hidden on keypress", function (assert) {
 });
 
 QUnit.test("errors aren't hidden if there is no keypress", function (assert) {
-  window.Superlists.initialize()
+  window.Superlists.initialize();
   assert.equal($('.has-error').is(':visible'), true);
 });
 
   </script>
+
 </body>
 </html>
+

@@ -2,8 +2,8 @@ from fabric.contrib.files import append, exists, sed
 from fabric.api import env, local, run
 import random
 
-REPO_URL = 'https://github.com/jesstucker/TDDwPythonV2.git'
 
+REPO_URL = 'https://github.com/hjwp/book-example.git'
 
 def deploy():
     site_folder = f'/home/{env.user}/sites/{env.host}'
@@ -38,11 +38,12 @@ def _update_settings(source_folder, site_name):
         f'ALLOWED_HOSTS = ["{site_name}"]'
     )
     secret_key_file = source_folder + '/superlists/secret_key.py'
-    if not exists(secret_key_file):  
+    if not exists(secret_key_file):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
         append(secret_key_file, f'SECRET_KEY = "{key}"')
     append(settings_path, '\nfrom .secret_key import SECRET_KEY')
+
 
 def _update_virtualenv(source_folder):
     virtualenv_folder = source_folder + '/../virtualenv'
@@ -50,14 +51,17 @@ def _update_virtualenv(source_folder):
         run(f'python3.6 -m venv {virtualenv_folder}')
     run(f'{virtualenv_folder}/bin/pip install -r {source_folder}/requirements.txt')
 
+
 def _update_static_files(source_folder):
     run(
         f'cd {source_folder}'
         ' && ../virtualenv/bin/python manage.py collectstatic --noinput'
     )
 
+
 def _update_database(source_folder):
     run(
         f'cd {source_folder}'
         ' && ../virtualenv/bin/python manage.py migrate --noinput'
-        )
+    )
+
