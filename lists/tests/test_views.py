@@ -189,3 +189,8 @@ class MyListsTest(TestCase):
 		self.client.post('/lists/new', data={'text': 'new item'})
 		list_ = List.objects.first()
 		self.assertEqual(list_.owner, user)
+
+class ShareListTest(TestCase):
+	def test_post_redirects_to_lists_page(self):
+		pass
+
