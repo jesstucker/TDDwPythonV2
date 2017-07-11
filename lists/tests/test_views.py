@@ -192,5 +192,29 @@ class MyListsTest(TestCase):
 
 class ShareListTest(TestCase):
 	def test_post_redirects_to_lists_page(self):
-		pass
+		list_ = List.objects.create()
+		response = self.client.post(
+			f'/lists/{list_.id}/share',
+			data = {'sharee': 'share.with@me.com'},
+
+		)
+		self.assertRedirects(response, f'/lists/{list_.id}/')
+
+	# def test_share_is_added_to_share_with_all(self):
+	# 	list_ = List.objects.create()
+	# 	user = User.objects.create(email='a@b.com')
+	# 	response = self.client.post(
+	# 		f'/lists/{list_.id}/share',
+	# 		# data={'email': 'shitball@fuckface.com'}
+	# 	)
+	# 	self.assertRedirects(response, f'/lists/{list_.id}/')
+
+	def test_sharing_a_list_via_post(self):
+		sharee = User.objects.create(email='share.with@me.com')
+		list_ = List.objects.create()
+		self.client.post(
+			f'/lists/{list_.id}/share',
+			data = {'sharee': 'share.with@me.com'}
+		)
+		self.assertIn(sharee, list_.shared_with.all())
 
